@@ -4,13 +4,14 @@
         %>
 <%! Watcher dummy = new Watcher(){ public void process(WatchedEvent event) { } }; %>
 <% ZooKeeper zk = new ZooKeeper((String) session.getAttribute("zkconnect"), 100, dummy); %>
-<% 
-if (request.getParameter("plan") != null){
+<%
+	if (request.getParameter("plan") != null){
   Plan p = WorkerDao.deserializePlan(request.getParameter("plan").getBytes());
   WorkerDao.createOrUpdatePlan(p, zk);
-  request.setAttribute("message", "plan "+p.getName()+" created");
-}
-zk.close();
+		request.setAttribute("message", "plan " + p.getName()
+				+ " created");
+	}
+	zk.close();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

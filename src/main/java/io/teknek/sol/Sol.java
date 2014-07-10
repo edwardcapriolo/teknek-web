@@ -92,8 +92,8 @@ public class Sol {
         return new SolReturn(currentNode, e.getMessage());
       }
     }
-    Bundle b = WorkerDao.getBundleFromUrl(u);
     try {
+    	Bundle b = WorkerDao.getBundleFromUrl(u);
       WorkerDao.saveBundle(zookeeper, b);
     } catch (WorkerDaoException e) {
       return new SolReturn(currentNode, e.getMessage());
@@ -102,7 +102,11 @@ public class Sol {
   }
   private SolReturn processShow(String [] parts){
     if (parts.length == 1 ){
-      return new SolReturn(currentNode, new String(WorkerDao.serializePlan(thePlan)));
+      try {
+        return new SolReturn(currentNode, new String(WorkerDao.serializePlan(thePlan)));
+      } catch (WorkerDaoException e) {
+        throw new RuntimeException(e);
+      }
     }
     if (parts.length == 3 && parts[1].equalsIgnoreCase("all")&& parts[2].equalsIgnoreCase("plans") ) {
       StringBuilder sb = new StringBuilder();
@@ -150,7 +154,11 @@ public class Sol {
       return new SolReturn(currentNode, sb.toString());
     }
     if (parts.length == 3 && parts[1].equalsIgnoreCase("CURRENT") && parts[2].equalsIgnoreCase("PLAN")){
-      return new SolReturn(currentNode, new String(WorkerDao.serializePlan(thePlan)));
+      try {
+        return new SolReturn(currentNode, new String(WorkerDao.serializePlan(thePlan)));
+      } catch (WorkerDaoException e) {
+        throw new RuntimeException(e);
+      }
     }
     if (parts.length == 2 && parts[1].equalsIgnoreCase("PLANS")){
       StringBuilder sb = new StringBuilder();
